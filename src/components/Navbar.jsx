@@ -32,8 +32,10 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 const Navbar = () => {
   const { 
     activeMenu, setActiveMenu, isClicked, 
-    setIsClicked, handleClick, screenSize, setScreenSize, currentColor 
+    handleClick, screenSize, setScreenSize, currentColor 
   } = useStateContext();
+
+  const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -43,6 +45,7 @@ const Navbar = () => {
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
     
   useEffect(() => {
@@ -51,13 +54,14 @@ const Navbar = () => {
     } else {
       setActiveMenu(true);
     }
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screenSize])
   
 
   return (
     <div className='flex justify-between p-2 md:mx-6 relative'>
       <NavButton title="Menu" 
-        customFunc={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
+        customFunc={handleActiveMenu}
         color={currentColor} icon={<AiOutlineMenu />}
       />
       <div className='flex'>
@@ -92,6 +96,7 @@ const Navbar = () => {
             <img 
               src={avatar}
               className="rounded-full w-8 h-8"
+              alt=''
             />
             <p>
               <span className='text-gray-400 text-14'>Hi, </span> {' '}
